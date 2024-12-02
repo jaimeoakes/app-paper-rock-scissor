@@ -3,39 +3,34 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="app-paper-rock-scissor.css">
+    <link rel="stylesheet" href="app-app-rock-paper-scissors.css">
     <title>Rock, Paper and Scissors</title> 
   </head>
 
   <body>
-    <p class="title">Rock Paper Scissors</p>
-    
-    <button onclick="
-        playGame('rock');
-    " class="move-button"><img src="images/rock-emoji copy.png" class="move-icon"></button>
-
-    <button onclick="
-        playGame('paper');
-    " class="move-button"><img src="images/paper-emoji copy.png" class="move-icon"></button>
-
-    <button onclick="
-        playGame('scissors');
-    " class="move-button"><img src="images/scissors-emoji copy.png" class="move-icon"></button>
-
-    <p class="js-result result"></p>  <!-- mostrar o result na pagina; tem 2 classes -->
-
-    <p class="js-moves"></p>   <!-- mostrar o moves na pagina; -->
-
-    <p class="js-score score"></p>   <!-- mostrar o score na pagina; tem 2 classes -->
-
-    <button onclick="
-        score.wins = 0;
-        score.losses = 0;
-        score.ties = 0;
-        localStorage.removeItem('score');
-        updateScoreElement();
-    " class="reset-score-button">Reset Score</button>
-
-      <script src="app-paper-rock-scissor.js"></script>
-    </body>
+    <div class="app-container">
+      <p class="title">Rock Paper Scissors</p>
+      <button onclick="playGame('rock');" class="move-button">
+        <img src="images/rock-emoji copy.png" class="move-icon">
+      </button>
+      <button onclick="playGame('paper');" class="move-button">
+        <img src="images/paper-emoji copy.png" class="move-icon">
+      </button>
+      <button onclick="playGame('scissors');" class="move-button">
+        <img src="images/scissors-emoji copy.png" class="move-icon">
+      </button>
+      <p class="js-result result"></p>
+      <p class="js-moves"></p>
+      <p class="js-score score"></p>
+      <button onclick="
+          score.wins = 0;
+          score.losses = 0;
+          score.ties = 0;
+          localStorage.removeItem('score');
+          updateScoreElement();
+      " class="reset-score-button">Reset Score</button>
+    </div>
+    <script src="app-rock-paper-scissors.js"></script>
+  </body>
+  
 </html>
