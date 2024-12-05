@@ -8,9 +8,6 @@ body {
   height: 100vh; /* Garante que o corpo ocupe toda a altura da tela */
   margin: 0; /* Remove margens padrão */
 }
-.app-container {
-  text-align: center;
-}
 
 .title {
   font-size: 30px;
@@ -41,10 +38,10 @@ body {
   margin-top: 60px;
 }
 
-.reset-score-button {
+.reset-score-button,
+.auto-play-button {
   background-color: rgb(129, 155, 122);
-  font-size: 13px;
-  /* border: none; */
+  font-size: 20px;
   padding: 2px 5px;
   cursor: pointer;
   border-radius: 10px;

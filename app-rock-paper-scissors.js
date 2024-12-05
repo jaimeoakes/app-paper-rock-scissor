@@ -4,7 +4,27 @@ let score = localGetStorage() || {
   ties: 0
 };
 
-  updateScoreElement();
+
+updateScoreElement();
+
+
+let isAutoPlaying = false;
+let intervalId;
+// modo Auto play;
+function autoPlay() {
+  if (!isAutoPlaying) {
+    intervalId = setInterval(function () {
+      const playerMove = pickComputerMove();
+      playGame(playerMove);
+    }, 1000)
+    isAutoPlaying = true;
+
+  } else {
+    clearInterval(intervalId);
+    isAutoPlaying = false;
+  }
+}
+
 
 function playGame(playerMove){
   const computerMove = pickComputerMove();
@@ -42,9 +62,12 @@ function playGame(playerMove){
       score.ties++;
 }
 
-  localSetStorage();
 
-  updateScoreElement();
+localSetStorage();
+
+
+updateScoreElement();
+
 
 document.querySelector('.js-result'). // updating o result na pagina;
 innerHTML = result;
