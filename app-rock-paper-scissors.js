@@ -1,116 +1,101 @@
+let isAutoPlaying = false; // Controla o estado do modo automatico
+let intervalId; // Armazena o identificador do intervalo
+
+// Objeto para armazenar o placar
 let score = localGetStorage() || {
   wins: 0,
   losses: 0,
   ties: 0
 };
 
+updateScoreElement(); // Atualiza o placar na tela
 
-updateScoreElement();
-
-
-let isAutoPlaying = false;
-let intervalId;
-// modo Auto play;
+// Função para ativar/desativar o modo automatico
 function autoPlay() {
-  if (!isAutoPlaying) {
+  if (!isAutoPlaying) { // Se o modo automático está desligado
     intervalId = setInterval(function () {
-      const playerMove = pickComputerMove();
-      playGame(playerMove);
-    }, 1000)
-    isAutoPlaying = true;
-
-  } else {
-    clearInterval(intervalId);
-    isAutoPlaying = false;
+      playGame(); // Chama playGame repetidamente a cada segundo
+    }, 1000);
+    isAutoPlaying = true; // Muda o estado para ligado
+  } else { // Se o modo automático está ligado
+    clearInterval(intervalId); // Para o intervalo
+    isAutoPlaying = false; // Muda o estado para desligado
   }
-}
+};
 
+// Função principal do jogo
+function playGame(playerMove) {
+  if (!playerMove) {
+    playerMove = pickComputerMove(); // Gera uma jogada automática se não for fornecida
+  }
 
-function playGame(playerMove){
-  const computerMove = pickComputerMove();
-  let result = '';
+const computerMove = pickComputerMove(); // Jogada do computador
+let result = '';
 
-  if (playerMove === 'rock'){
-    if (computerMove === 'rock'){            
-        result = 'Tie.';
-  } else if(computerMove === 'paper'){
-        result = 'You lose.';
-  } else if(computerMove === 'scissors')
-        result = 'You win.';
-}
-  if (playerMove === 'paper'){
-      if (computerMove === 'rock'){            
-          result = 'You win.';
-    } else if(computerMove === 'paper'){
-          result = 'Tie.';
-    } else if(computerMove === 'scissors')
-          result = 'You lose.';
-}
-  if (playerMove === 'scissors'){
-      if (computerMove === 'rock'){            
-          result = 'You lose.';
-    } else if(computerMove === 'paper'){
-          result = 'You win.';
-    } else if(computerMove === 'scissors')
-          result = 'Tie.';
-}
-  if (result === 'You win.'){
-      score.wins++;
-  } else if(result === 'You lose.'){
-      score.losses++;
-  } else if(result === 'Tie.'){
-      score.ties++;
-}
+  // Lógica do jogo
+  if (playerMove === 'rock') {
+    result = (computerMove === 'rock') ? 'Tie.' :
+      (computerMove === 'paper') ? 'You lose.' : 'You win.';
+  } else if (playerMove === 'paper') {
+    result = (computerMove === 'rock') ? 'You win.' :
+      (computerMove === 'paper') ? 'Tie.' : 'You lose.';
+  } else if (playerMove === 'scissors') {
+    result = (computerMove === 'rock') ? 'You lose.' :
+      (computerMove === 'paper') ? 'You win.' : 'Tie.';
+  }
 
+  // Atualiza o placar com base no resultado
+  if (result === 'You win.') {
+    score.wins++;
+  } else if (result === 'You lose.') {
+    score.losses++;
+  } else if (result === 'Tie.') {
+    score.ties++;
+  }
 
-localSetStorage();
-
-
-updateScoreElement();
-
+localSetStorage(); // Salva o placar no localStorage
+updateScoreElement(); // Atualiza o placar na tela
 
 document.querySelector('.js-result'). // updating o result na pagina;
 innerHTML = result;
 
-document.querySelector('.js-moves'). // updating o score na pagina;
-innerHTML = `You picked
-<img src="images/${playerMove}-emoji copy.png" class="move-icon">
-<img src="images/${computerMove}-emoji copy.png" class="move-icon">
-Computer`;
-  
+// Atualiza os resultados e jogadas na página
+document.querySelector('.js-result').innerHTML = result;
+document.querySelector('.js-moves').innerHTML = `
+  You picked
+  <img src="images/${playerMove}-emoji copy.png" class="move-icon">
+  <img src="images/${computerMove}-emoji copy.png" class="move-icon">
+  Computer
+  `;
+};
+
+// Atualiza o placar na tela
+function updateScoreElement() {
+  document.querySelector('.js-score').innerHTML = `
+    Wins: ${score.wins},
+    Losses: ${score.losses},
+    Ties: ${score.ties}.
+  `;
 }
 
-
-function updateScoreElement(){        // updating o score na pagina;
-  document.querySelector('.js-score') // alterando o texto <p></p> em html;
-    .innerHTML = `Wins: ${score.wins},
-  Losses: ${score.losses},
-  Ties: ${score.ties}.`
-}
-
-
+// Salva o placar no localStorage
 function localSetStorage(){
   localStorage.setItem('score', JSON.stringify(score)); // chaves no localStorage são sempre strings;
-}
+};
 
-
+// Recupera o placar do localStorage
 function localGetStorage(){
   return JSON.parse(localStorage.getItem('score'));
-}
+};
 
-
-function pickComputerMove(){
+// Gera uma jogada aleatória para o computador
+function pickComputerMove() {
   const randomMove = Math.random();
-  let computerMove = '';
-
-  if (randomMove >= 0 && randomMove < 1/3) {
-    computerMove = 'rock';
-
-  } else if(randomMove >= 1/3 && randomMove < 2/3) {
-    computerMove = 'paper';
-
-  } else if(randomMove >= 2/3 && randomMove < 1) {
-    computerMove = 'scissors';
+  if (randomMove < 1/3) {
+    return 'rock';
+  } else if (randomMove < 2/3) {
+    return 'paper';
+  } else {
+    return 'scissors';
   }
-      return computerMove;
-}
+};
